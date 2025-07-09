@@ -1,26 +1,23 @@
 import discord # type: ignore
-from dotenv import load_dotenv # type: ignore
 import os
-import asyncio
+from dotenv import load_dotenv # type: ignore
 
 load_dotenv()
-TOLKEN = os.getenv('TOLKEN')
+TOKEN = os.getenv("TOKEN")
 
-BOT = discord.Client(intents=discord.Intents.all())
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents=intents)
 
-@BOT.event
+@client.event
 async def on_ready():
-    print(f'Bot conectado como {BOT.user}')
+    print(f'✅ Bot conectado como {client.user}')
 
-@BOT.event
+@client.event
 async def on_message(message):
-    if message.author.bot == BOT.user:
+    if message.author.bot:
         return
-    
     if message.content.lower() == 'oi':
-        await message.channel.send(f"Oi, {message.author.display_name}!")
+        await message.channel.send('Olá!')
 
-
-BOT.run(TOLKEN)
-  
-        
+client.run(TOKEN)
